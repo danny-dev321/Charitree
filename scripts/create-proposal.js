@@ -1,5 +1,17 @@
 import hre from "hardhat";
 
+// ============================================
+// CONTRACT ADDRESSES - UPDATE AFTER DEPLOYMENT
+// ============================================
+const DAO_ADDRESS = '0x718c18F91ECB572d6ec96bf2d0F2573DaA8a2C50'; // Moonbase
+
+// ============================================
+// PROPOSAL PARAMETERS - CUSTOMIZE AS NEEDED
+// ============================================
+const PROPOSAL_DESCRIPTION = 'Build a School in Rural Village';
+const PROPOSAL_BUDGET_DEV = '5.0'; // In DEV tokens
+const BENEFICIARY_ADDRESS = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'; // Replace with actual beneficiary
+
 async function main() {
   // Get ethers from the network connection
   const connection = await hre.network.connect();
@@ -11,10 +23,7 @@ async function main() {
 
   // Create instance of the CTDAO contract
   const CTDAO = await ethers.getContractFactory('CTDAO');
-
-  // Connect to the deployed contract (replace with your deployed address)
-  const daoAddress = '0x718c18F91ECB572d6ec96bf2d0F2573DaA8a2C50'; // Moonbase address - NEW
-  const dao = await CTDAO.attach(daoAddress);
+  const dao = await CTDAO.attach(DAO_ADDRESS);
 
   // Check if the signer is a DAO member
   const isMember = await dao.members(signer.address);
@@ -23,18 +32,20 @@ async function main() {
     process.exit(1);
   }
 
-  // Proposal details
-  const description = 'Build a School in Rural Village';
-  const budget = ethers.parseEther('5.0'); // 5 DEV
-  const beneficiary = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'; // Replace with actual beneficiary
+  // Proposal details (from constants at top of file)
+  const description = PROPOSAL_DESCRIPTION;
+  const budget = ethers.parseEther(PROPOSAL_BUDGET_DEV);
+  const beneficiary = BENEFICIARY_ADDRESS;
+  const approver = signer.address; // The person who will approve fund release (usually project manager or DAO member)
   
   console.log('Creating proposal...');
   console.log(`Description: ${description}`);
   console.log(`Budget: ${ethers.formatEther(budget)} DEV`);
   console.log(`Beneficiary: ${beneficiary}`);
+  console.log(`Approver: ${approver}`);
   
-  // Create the proposal
-  const tx = await dao.createProposal(description, budget, beneficiary);
+  // Create the proposal (requires 4 parameters)
+  const tx = await dao.createProposal(description, budget, beneficiary, approver);
   
   // Wait for transaction to be mined
   console.log('Waiting for transaction confirmation...');

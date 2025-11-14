@@ -1,5 +1,10 @@
 import hre from "hardhat";
 
+// ============================================
+// CONTRACT ADDRESSES - UPDATE AFTER DEPLOYMENT
+// ============================================
+const TREASURY_ADDRESS = '0x499C6cC024d91D3cc497D4197d41b24122c6BFf9'; // Moonbase
+
 async function main() {
   // Get ethers from the network connection
   const connection = await hre.network.connect();
@@ -11,13 +16,10 @@ async function main() {
 
   // Create instance of the CTTreasury contract
   const CTTreasury = await ethers.getContractFactory('CTTreasury');
+  const treasury = await CTTreasury.attach(TREASURY_ADDRESS);
 
-  // Connect to the deployed contract (replace with your deployed address)
-  const treasuryAddress = '0x499C6cC024d91D3cc497D4197d41b24122c6BFf9'; // Moonbase address - NEW
-  const treasury = await CTTreasury.attach(treasuryAddress);
-
-  // Donation amount (1 DEV token)
-  const donationAmount = ethers.parseEther('0.1');
+  // Donation amount
+  const donationAmount = ethers.parseEther('0.1'); // 0.1 DEV
   
   console.log(`Donating ${ethers.formatEther(donationAmount)} DEV to the treasury...`);
   

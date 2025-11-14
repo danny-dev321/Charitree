@@ -1,5 +1,10 @@
 import hre from "hardhat";
 
+// ============================================
+// CONTRACT ADDRESSES - UPDATE AFTER DEPLOYMENT
+// ============================================
+const DAO_ADDRESS = '0x718c18F91ECB572d6ec96bf2d0F2573DaA8a2C50'; // Moonbase
+
 async function main() {
   // Get ethers from the network connection
   const connection = await hre.network.connect();
@@ -11,12 +16,9 @@ async function main() {
 
   // Create instance of the CTDAO contract
   const CTDAO = await ethers.getContractFactory('CTDAO');
+  const dao = await CTDAO.attach(DAO_ADDRESS);
 
-  // Connect to the deployed contract
-  const daoAddress = '0x718c18F91ECB572d6ec96bf2d0F2573DaA8a2C50'; // Moonbase address - NEW
-  const dao = await CTDAO.attach(daoAddress);
-
-  console.log(`DAO Contract: ${daoAddress}\n`);
+  console.log(`DAO Contract: ${DAO_ADDRESS}\n`);
 
   // Check membership
   const isMember = await dao.members(signer.address);

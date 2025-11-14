@@ -1,5 +1,15 @@
 import hre from "hardhat";
 
+// ============================================
+// CONTRACT ADDRESSES - UPDATE AFTER DEPLOYMENT
+// ============================================
+const DAO_ADDRESS = '0x718c18F91ECB572d6ec96bf2d0F2573DaA8a2C50'; // Moonbase
+
+// ============================================
+// EXECUTION PARAMETERS - CUSTOMIZE AS NEEDED
+// ============================================
+const PROPOSAL_ID = 0; // Which proposal to execute
+
 async function main() {
   // Get ethers from the network connection
   const connection = await hre.network.connect();
@@ -11,10 +21,7 @@ async function main() {
 
   // Create instance of the CTDAO contract
   const CTDAO = await ethers.getContractFactory('CTDAO');
-
-  // Connect to the deployed contract (replace with your deployed address)
-  const daoAddress = '0x718c18F91ECB572d6ec96bf2d0F2573DaA8a2C50'; // Moonbase address - NEW
-  const dao = await CTDAO.attach(daoAddress);
+  const dao = await CTDAO.attach(DAO_ADDRESS);
 
   // Check if the signer is a DAO member
   const isMember = await dao.members(signer.address);
@@ -23,8 +30,8 @@ async function main() {
     process.exit(1);
   }
 
-  // Proposal ID to execute (you can change this)
-  const proposalId = 0; // Execute the first proposal
+  // Proposal ID to execute (from constant at top of file)
+  const proposalId = PROPOSAL_ID;
   
   // Get proposal details
   const proposal = await dao.proposals(proposalId);
@@ -34,6 +41,8 @@ async function main() {
   console.log(`- ID: ${proposalId}`);
   console.log(`- Description: ${proposal.description}`);
   console.log(`- Budget: ${ethers.formatEther(proposal.budget)} DEV`);
+  console.log(`- Beneficiary: ${proposal.beneficiary}`);
+  console.log(`- Approver: ${proposal.approver}`);
   console.log(`- Votes: ${proposal.votes} / ${memberNr} required`);
   console.log(`- Executed: ${proposal.executed}`);
 
