@@ -13,7 +13,7 @@ async function main() {
   const CTDAO = await ethers.getContractFactory('CTDAO');
 
   // Connect to the deployed contract
-  const daoAddress = '0x09E6431D1185e0fCB46EcbB3917B84492614C49f'; // Moonbase address
+  const daoAddress = '0x718c18F91ECB572d6ec96bf2d0F2573DaA8a2C50'; // Moonbase address - NEW
   const dao = await CTDAO.attach(daoAddress);
 
   console.log(`DAO Contract: ${daoAddress}\n`);

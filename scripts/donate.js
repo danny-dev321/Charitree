@@ -13,7 +13,7 @@ async function main() {
   const CTTreasury = await ethers.getContractFactory('CTTreasury');
 
   // Connect to the deployed contract (replace with your deployed address)
-  const treasuryAddress = '0xCbE06f0ba18a31394688a12c0a6810992406eCb8'; // Moonbase address
+  const treasuryAddress = '0x499C6cC024d91D3cc497D4197d41b24122c6BFf9'; // Moonbase address - NEW
   const treasury = await CTTreasury.attach(treasuryAddress);
 
   // Donation amount (1 DEV token)
