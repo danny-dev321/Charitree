@@ -49,8 +49,10 @@ module.exports = async function (deployer) {
     // create first project
     // propose project
     const beneficiary = "0x6472c4ff01d7f6cca539aec08f9c7f328058e685";
+    const approver = "0x6472c4ff01d7f6cca539aec08f9c7f328058e685";
+
     console.log("create proposal");
-    await DAOInstance.createProposal("plant tree", 100000000000000, beneficiary);
+    await DAOInstance.createProposal("plant tree", 0, beneficiary, approver);
 
     // vote for project
     console.log("vote");

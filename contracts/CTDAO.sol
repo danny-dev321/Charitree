@@ -14,7 +14,8 @@ contract CTDAO {
     struct Proposal {
         string description;
         uint budget;
-        address beneficiary;
+        address payable beneficiary;
+        address approver;
         uint256 votes;
         bool executed;
     }
@@ -50,8 +51,8 @@ contract CTDAO {
     }
 
     /// @notice create a new proposal
-    function createProposal(string memory _description, uint budget, address beneficiary) external onlyMember {
-        proposals[proposalCount] = Proposal(_description,budget,beneficiary, 0, false);
+    function createProposal(string memory _description, uint budget, address payable beneficiary, address approver) external onlyMember {
+        proposals[proposalCount] = Proposal(_description,budget,beneficiary,approver, 0, false);
         emit ProposalCreated(proposalCount, _description);
         proposalCount++;
     }
@@ -66,16 +67,21 @@ contract CTDAO {
 
     /// @notice executing a proposal
     function executeProposal(uint256 _proposalId) external onlyMember {
-        require(proposals[_proposalId].votes >= memberNr, "Not enough votes");
+        require(proposals[_proposalId].votes >= (memberNr / 2) + 1, "Not enough votes");
         require(!proposals[_proposalId].executed, "Already executed");
 
         // logic for executing a proposal
         CTTreasury treasury = CTTreasury(cTTreasuryAddress);
-        require ((proposals[_proposalId].budget > treasury.getBalance()), "not enough budget for project");
+        require ((proposals[_proposalId].budget <= treasury.getBalance()), "not enough budget for project");
         CTProject project = new CTProject(
             proposals[_proposalId].description,
-            proposals[_proposalId].beneficiary
+            proposals[_proposalId].beneficiary,
+            proposals[_proposalId].approver
             );
+        // funding the project
+        if (proposals[_proposalId].budget > 0) {
+            treasury.fund(proposals[_proposalId].budget, payable(project));
+        }
 
         proposals[_proposalId].executed = true;
         emit ProposalExecuted(_proposalId);
