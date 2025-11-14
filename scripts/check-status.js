@@ -10,9 +10,9 @@ async function main() {
   console.log(`Checking status for account: ${signer.address}\n`);
 
   // Contract addresses (replace with your deployed addresses)
-  const tokenAddress = '0x26da1019FdA9c138480b277aADFF34b09178e76B'; // Moonbase
-  const treasuryAddress = '0x1a6176CdAC1744F4a6AF9ED35316790D33D01b4B'; // Moonbase
-  const daoAddress = '0xD28195b340f83f25617DA505585F723E55D06639'; // Moonbase
+  const tokenAddress = '0x8c7584557B3a4128496680d53609BF4C0EC58393'; // Moonbase
+  const treasuryAddress = '0xCbE06f0ba18a31394688a12c0a6810992406eCb8'; // Moonbase
+  const daoAddress = '0x09E6431D1185e0fCB46EcbB3917B84492614C49f'; // Moonbase
 
   // Create contract instances
   const CTToken = await ethers.getContractFactory('CTToken');
