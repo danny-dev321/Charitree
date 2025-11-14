@@ -35,7 +35,16 @@ async function main() {
   
   // Get proposal details
   const proposal = await dao.proposals(proposalId);
-  const memberNr = await dao.memberNr();
+  
+  // Try to get memberNr (may not be available on old deployments)
+  let memberNr;
+  try {
+    memberNr = await dao.memberNr();
+  } catch (error) {
+    // For old deployments without public memberNr, assume need majority
+    console.log('⚠️  Warning: memberNr not accessible, cannot verify vote count requirement');
+    memberNr = null;
+  }
   
   console.log('\nProposal Details:');
   console.log(`- ID: ${proposalId}`);
@@ -43,7 +52,7 @@ async function main() {
   console.log(`- Budget: ${ethers.formatEther(proposal.budget)} DEV`);
   console.log(`- Beneficiary: ${proposal.beneficiary}`);
   console.log(`- Approver: ${proposal.approver}`);
-  console.log(`- Votes: ${proposal.votes} / ${memberNr} required`);
+  console.log(`- Votes: ${proposal.votes}${memberNr ? ` / ${memberNr} required` : ''}`);
   console.log(`- Executed: ${proposal.executed}`);
 
   // Check if proposal can be executed
@@ -52,7 +61,7 @@ async function main() {
     process.exit(1);
   }
 
-  if (proposal.votes < memberNr) {
+  if (memberNr && proposal.votes < memberNr) {
     console.error(`Error: Not enough votes! Needs ${memberNr - proposal.votes} more vote(s).`);
     process.exit(1);
   }

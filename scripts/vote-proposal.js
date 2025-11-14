@@ -64,13 +64,18 @@ async function main() {
   console.log(`\nUpdated Votes: ${updatedProposal.votes}`);
   
   // Check if proposal has enough votes to execute
-  const memberNr = await dao.memberNr();
-  console.log(`Total DAO Members: ${memberNr}`);
-  
-  if (updatedProposal.votes >= memberNr) {
-    console.log('\n✅ Proposal has enough votes to be executed!');
-  } else {
-    console.log(`\n⏳ Proposal needs ${memberNr - updatedProposal.votes} more vote(s) to be executed.`);
+  try {
+    const memberNr = await dao.memberNr();
+    console.log(`Total DAO Members: ${memberNr}`);
+    
+    if (updatedProposal.votes >= memberNr) {
+      console.log('\n✅ Proposal has enough votes to be executed!');
+    } else {
+      console.log(`\n⏳ Proposal needs ${memberNr - updatedProposal.votes} more vote(s) to be executed.`);
+    }
+  } catch (error) {
+    console.log('\nNote: memberNr is not accessible (contract needs redeployment with public memberNr)');
+    console.log('✅ Vote was successfully cast! Check execution requirements manually.');
   }
 }
 

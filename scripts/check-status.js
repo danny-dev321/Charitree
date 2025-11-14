@@ -59,8 +59,17 @@ async function main() {
   console.log(`Contract Address: ${DAO_ADDRESS}`);
   const isMember = await dao.members(signer.address);
   console.log(`You are a DAO member: ${isMember ? 'YES ✓' : 'NO ✗'}`);
-  const memberNr = await dao.memberNr();
-  console.log(`Total Members: ${memberNr}`);
+  
+  // Try to get memberNr (may not be public in old deployments)
+  let memberNr;
+  try {
+    memberNr = await dao.memberNr();
+    console.log(`Total Members: ${memberNr}`);
+  } catch (error) {
+    console.log(`Total Members: N/A (contract needs redeployment)`);
+    memberNr = null;
+  }
+  
   const proposalCount = await dao.proposalCount();
   console.log(`Total Proposals: ${proposalCount}`);
 
@@ -77,7 +86,7 @@ async function main() {
       console.log(`  Budget: ${ethers.formatEther(proposal.budget)} DEV`);
       console.log(`  Beneficiary: ${proposal.beneficiary}`);
       console.log(`  Approver: ${proposal.approver}`);
-      console.log(`  Votes: ${proposal.votes} / ${memberNr}`);
+      console.log(`  Votes: ${proposal.votes}${memberNr ? ` / ${memberNr}` : ''}`);
       console.log(`  Status: ${proposal.executed ? '✓ EXECUTED' : '⏳ PENDING'}`);
     }
   }

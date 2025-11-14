@@ -24,9 +24,13 @@ async function main() {
   const isMember = await dao.members(signer.address);
   console.log(`Is ${signer.address} a member? ${isMember}`);
 
-  // Check memberNr
-  const memberNr = await dao.memberNr();
-  console.log(`Total members: ${memberNr}`);
+  // Check memberNr (may not be public in old deployments)
+  try {
+    const memberNr = await dao.memberNr();
+    console.log(`Total members: ${memberNr}`);
+  } catch (error) {
+    console.log(`Total members: N/A (memberNr is not public in this deployment)`);
+  }
 
   // Check treasury address
   const treasuryAddress = await dao.cTTreasuryAddress();
