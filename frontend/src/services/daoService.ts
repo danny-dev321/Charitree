@@ -51,3 +51,43 @@ export async function getProposalCount(provider: BrowserProvider): Promise<bigin
   return await daoContract.proposalCount();
 }
 
+/**
+ * Get all proposals
+ */
+export async function getAllProposals(provider: BrowserProvider) {
+  const daoContract = new Contract(CONTRACTS.DAO, CTDAO_ABI, provider);
+  const count = await daoContract.proposalCount();
+  
+  const proposals = [];
+  for (let i = 0; i < Number(count); i++) {
+    const proposal = await daoContract.proposals(i);
+    proposals.push({
+      id: i,
+      description: proposal.description,
+      budget: proposal.budget,
+      beneficiary: proposal.beneficiary,
+      approver: proposal.approver,
+      votes: proposal.votes,
+      executed: proposal.executed,
+    });
+  }
+  
+  return proposals;
+}
+
+/**
+ * Vote on a proposal
+ */
+export async function voteOnProposal(signer: Signer, proposalId: number): Promise<any> {
+  const daoContract = new Contract(CONTRACTS.DAO, CTDAO_ABI, signer);
+  return await daoContract.vote(proposalId);
+}
+
+/**
+ * Execute a proposal
+ */
+export async function executeProposal(signer: Signer, proposalId: number): Promise<any> {
+  const daoContract = new Contract(CONTRACTS.DAO, CTDAO_ABI, signer);
+  return await daoContract.executeProposal(proposalId);
+}
+

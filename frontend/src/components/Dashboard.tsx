@@ -3,6 +3,7 @@ import { useWeb3 } from '../contexts/Web3Context';
 import DonateSection from './DonateSection';
 import TreasuryStats from './TreasuryStats';
 import CreateProposal from './CreateProposal';
+import ProposalList from './ProposalList';
 
 type TabType = 'donate' | 'proposals' | 'create';
 
@@ -47,7 +48,7 @@ export default function Dashboard() {
 
       <div className="dashboard-content">
         {activeTab === 'donate' && <DonateSection />}
-        {activeTab === 'proposals' && <ProposalsPlaceholder />}
+        {activeTab === 'proposals' && <ProposalList />}
         {activeTab === 'create' && <CreateProposal />}
       </div>
     </div>
@@ -97,12 +98,3 @@ function Feature({ icon, title, description }: FeatureProps) {
   );
 }
 
-// Placeholder for proposals (Task 5)
-function ProposalsPlaceholder() {
-  return (
-    <div className="placeholder">
-      <h2>Proposals</h2>
-      <p>TODO: Task 5 - Implement proposal list and voting</p>
-    </div>
-  );
-}
