@@ -591,6 +591,138 @@ body {
   margin-bottom: 1rem;
 }
 
+/* Create Proposal */
+.create-proposal h2 {
+  margin-bottom: 0.5rem;
+}
+
+.locked-state {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.locked-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.locked-message {
+  font-size: 1.25rem;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.locked-help {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Organization Card */
+.organization-card {
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.org-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.org-header h3 {
+  margin: 0;
+  color: var(--primary);
+}
+
+.verified-badge {
+  background: var(--primary);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.org-description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.org-details {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.org-detail {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.detail-label {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.detail-value {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.detail-value.mono {
+  font-family: monospace;
+  font-size: 0.85rem;
+}
+
+.org-note {
+  background: rgba(243, 156, 18, 0.1);
+  border: 1px solid #f39c12;
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-size: 0.85rem;
+  color: #f39c12;
+}
+
+.org-note strong {
+  font-weight: 700;
+}
+
+/* Proposal Form */
+.proposal-form {
+  max-width: 700px;
+}
+
+.proposal-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 150px;
+}
+
+.proposal-textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.proposal-textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Transaction Modal */
 .modal-overlay {
   position: fixed;
