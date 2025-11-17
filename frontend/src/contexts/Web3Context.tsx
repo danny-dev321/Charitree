@@ -70,17 +70,22 @@ export function Web3Provider({ children }: { children: ReactNode }) {
       // Get the wallet provider
       const { provider: ethProvider, name } = getWalletProvider(walletType);
 
-      // Create Web3 provider
-      const web3Provider = createWeb3Provider(ethProvider);
-
-      // Request account access
+      // Request account access FIRST
       await requestAccounts(ethProvider);
 
-      // Check and switch network if needed
-      const onCorrectNetwork = await isOnMoonbaseAlpha(web3Provider);
+      // Create a temporary provider to check network
+      const tempProvider = createWeb3Provider(ethProvider);
+      const onCorrectNetwork = await isOnMoonbaseAlpha(tempProvider);
+      
+      // Switch network if needed BEFORE creating the final provider
       if (!onCorrectNetwork) {
         await switchToMoonbaseAlpha(ethProvider);
+        // Wait a moment for the network switch to complete
+        await new Promise(resolve => setTimeout(resolve, 500));
       }
+
+      // NOW create the Web3 provider after network is confirmed correct
+      const web3Provider = createWeb3Provider(ethProvider);
 
       // Get signer and address
       const signer = await web3Provider.getSigner();
@@ -158,10 +163,14 @@ export function Web3Provider({ children }: { children: ReactNode }) {
   // Auto-reconnect on page load if previously connected
   useEffect(() => {
     const savedWallet = getSavedWalletPreference();
-    if (savedWallet && availableWallets.length > 0) {
-      connectWallet(savedWallet).catch(console.error);
+    if (savedWallet && availableWallets.length > 0 && !account) {
+      connectWallet(savedWallet).catch((err) => {
+        console.error('Auto-reconnect failed:', err);
+        // Clear the saved preference if auto-reconnect fails
+        clearWalletPreference();
+      });
     }
-  }, [availableWallets]);
+  }, [availableWallets, account]);
 
   const value = {
     provider,

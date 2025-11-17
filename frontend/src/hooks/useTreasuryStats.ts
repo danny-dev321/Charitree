@@ -38,6 +38,9 @@ export function useTreasuryStats(options: UseTreasuryStatsOptions = {}): Treasur
     setError(null);
 
     try {
+      // Verify network is correct before making calls
+      await provider.getNetwork();
+      
       // Get treasury balance
       const treasuryBalanceWei = await getTreasuryBalance(provider);
       setTreasuryBalance(devToMDev(treasuryBalanceWei));
@@ -51,7 +54,14 @@ export function useTreasuryStats(options: UseTreasuryStatsOptions = {}): Treasur
       }
     } catch (err: any) {
       console.error('Error loading treasury stats:', err);
-      setError(err.message || 'Failed to load stats');
+      
+      // Check if it's a network error
+      if (err.code === 'NETWORK_ERROR' || err.message?.includes('network changed')) {
+        console.log('Network error detected, will retry on next poll...');
+        setError('Network is switching, please wait...');
+      } else {
+        setError(err.message || 'Failed to load stats');
+      }
     } finally {
       setIsLoading(false);
     }
