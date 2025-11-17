@@ -13,8 +13,8 @@ export default buildModule("ChariTreeModule", (module) => {
     });
 
     // Step 2: Deploy CTTreasury with exchange rate and token address
-    // Exchange rate: 1 ETH = 1000 CTT tokens (0.001 ETH per token)
-    const exchangeRate = module.getParameter("exchangeRate", 1000000000000000n); // 0.001 ETH in wei
+    // Exchange rate: 0.001 DEV per CTT token (passed from parameters.json)
+    const exchangeRate = module.getParameter("exchangeRate", 1000000000000000n);
     
     const ctTreasury = module.contract("CTTreasury", [exchangeRate, ctToken], {
         from: deployer,
@@ -26,10 +26,8 @@ export default buildModule("ChariTreeModule", (module) => {
     });
 
     // Step 4: Deploy CTDAO with treasury address and initial members
-    // Note: initialMembers must be passed as a parameter with actual addresses
-    // Example: ["0x1234...", "0x5678..."]
-    // Using empty array as default - you MUST pass initialMembers parameter to deploy successfully
-    const initialMembers = module.getParameter("initialMembers", []);
+    // initialMembers MUST be provided in parameters.json file - no default value!
+    const initialMembers = module.getParameter("initialMembers");
     
     const ctDAO = module.contract("CTDAO", [ctTreasury, initialMembers], {
         from: deployer,

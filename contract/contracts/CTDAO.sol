@@ -23,7 +23,7 @@ contract CTDAO {
     // properties
     mapping(uint256 => Proposal) public proposals;
     mapping(address => bool) public members;
-    uint16 memberNr; 
+    uint16 public memberNr;  // Made public so it can be read externally
     uint256 public proposalCount;
     address payable public cTTreasuryAddress;
 

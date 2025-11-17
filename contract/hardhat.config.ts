@@ -43,6 +43,10 @@ export default {
       chainId: 1287,
       url: configVariable("MOONBASE_RPC_URL"),
       accounts: [configVariable("MOONBASE_PRIVATE_KEY")],
+      // Stability improvements for testnet
+      timeout: 120000, // 2 minutes timeout
+      confirmations: 2, // Wait for 2 block confirmations
+      pollingInterval: 5000, // Poll every 5 seconds instead of default
     }
   },
 };
