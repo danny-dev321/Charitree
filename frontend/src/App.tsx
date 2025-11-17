@@ -20,7 +20,6 @@ function App() {
           </header>
           
           <main className="app-main">
-            {/* Dashboard will go here */}
             <Dashboard />
           </main>
           

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { formatMDev, formatAddress } from '../utils/format';
+import { formatMDev } from '../utils/format';
 import { getOrganizationByAddress } from '../data/mockOrganizations';
 import type { Proposal } from '../types/organization';
 

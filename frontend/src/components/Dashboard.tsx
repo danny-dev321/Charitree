@@ -59,42 +59,10 @@ export default function Dashboard() {
 function EmptyState() {
   return (
     <div className="empty-state">
+      <div className="empty-icon">🌳</div>
       <h2>Welcome to ChariTree</h2>
-      <p>Connect your wallet to start making a difference</p>
-      <div className="features">
-        <Feature
-          icon="💰"
-          title="Donate"
-          description="Contribute DEV tokens to support tree planting initiatives"
-        />
-        <Feature
-          icon="🗳️"
-          title="Vote"
-          description="DAO members can vote on charity proposals"
-        />
-        <Feature
-          icon="🌱"
-          title="Impact"
-          description="Track your contribution and see the difference you make"
-        />
-      </div>
+      <p>Connect your wallet to start planting trees and making a difference</p>
+
     </div>
   );
 }
-
-interface FeatureProps {
-  icon: string;
-  title: string;
-  description: string;
-}
-
-function Feature({ icon, title, description }: FeatureProps) {
-  return (
-    <div className="feature">
-      <span className="feature-icon">{icon}</span>
-      <h3>{title}</h3>
-      <p>{description}</p>
-    </div>
-  );
-}
-
